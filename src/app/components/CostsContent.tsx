@@ -8,7 +8,7 @@ import {
   Tooltip,
 } from "recharts";
 import { TrendingUp } from "lucide-react";
-import { AnimatedKPI, GlassCard, SectionHeader, StaggerIn, useCountUp } from "./premium-ui";
+import { AnimatedKPI, GlassCard, SectionHeader, StaggerIn, useCountUp, CardHeader, InfoTooltip } from "./premium-ui";
 
 const sora = "'Sora', sans-serif";
 const manrope = "'Manrope', sans-serif";
@@ -71,8 +71,11 @@ export function CostsContent() {
         {/* Left edge glow */}
         <div style={{ position: "absolute", left: 0, top: 0, bottom: 0, width: 3, background: "linear-gradient(180deg, #E24C4A, #386BB7)", borderRadius: "14px 0 0 14px" }} />
         <div>
-          <div style={{ fontFamily: manrope, fontSize: 10, color: "#AEB3BD", textTransform: "uppercase", letterSpacing: "0.06em" }}>
-            TOTAL AI SPEND (YTD)
+          <div style={{ display: "flex", alignItems: "flex-start", gap: 8 }}>
+            <div style={{ fontFamily: manrope, fontSize: 10, color: "#AEB3BD", textTransform: "uppercase", letterSpacing: "0.06em" }}>
+              TOTAL AI SPEND (YTD)
+            </div>
+            <InfoTooltip text="Total year-to-date expenditure on all AI tools across the organization, including both approved and shadow spending." />
           </div>
           <div ref={heroCounter.ref} style={{ fontFamily: sora, fontSize: 44, fontWeight: 700, color: "#F5F5F5", marginTop: 4, lineHeight: 1 }}>
             ${heroCounter.value.toLocaleString()}
@@ -89,15 +92,18 @@ export function CostsContent() {
 
       {/* 3 Supporting KPIs */}
       <div style={{ display: "flex", gap: 14 }}>
-        <AnimatedKPI label="APPROVED SPEND" value={246340} prefix="$" delay={0.1} color="#2ECC71" />
-        <AnimatedKPI label="SHADOW SPEND" value={38260} prefix="$" delay={0.15} color="#F14F44" />
-        <AnimatedKPI label="COST PER USER" value={47.2} prefix="$" delay={0.2} color="#AEB3BD" />
+        <AnimatedKPI label="APPROVED SPEND" value={246340} prefix="$" delay={0.1} color="#2ECC71" info="Total spend on officially approved and governed AI tools across the organization." />
+        <AnimatedKPI label="SHADOW SPEND" value={38260} prefix="$" delay={0.15} color="#F14F44" info="Estimated spend on unapproved AI tools discovered through network monitoring and browser analysis." />
+        <AnimatedKPI label="COST PER USER" value={47.2} prefix="$" delay={0.2} color="#AEB3BD" info="Average monthly AI tool cost per active employee, calculated across all approved subscriptions." />
       </div>
 
       {/* Bar Chart */}
       <GlassCard delay={0.25} style={{ padding: "22px 24px" }}>
         <div className="flex items-center justify-between" style={{ marginBottom: 18 }}>
-          <span style={{ fontFamily: sora, fontSize: 15, color: "#F5F5F5" }}>Approved vs Shadow Spend (6 Months)</span>
+          <div className="flex items-center" style={{ gap: 8 }}>
+            <span style={{ fontFamily: sora, fontSize: 15, color: "#F5F5F5" }}>Approved vs Shadow Spend (6 Months)</span>
+            <InfoTooltip text="Monthly comparison of approved vs. shadow AI spending over the past 6 months. Helps identify trends in ungoverned tool usage." />
+          </div>
           <div className="flex items-center" style={{ gap: 16 }}>
             <div className="flex items-center" style={{ gap: 5 }}>
               <span style={{ width: 8, height: 8, borderRadius: "50%", background: "#386BB7" }} />
@@ -134,10 +140,7 @@ export function CostsContent() {
       <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 16 }}>
         {/* Duplicate Tools */}
         <GlassCard delay={0.35} style={{ padding: "22px 24px" }}>
-          <div style={{ fontFamily: manrope, fontSize: 10, color: "#F14F44", textTransform: "uppercase", letterSpacing: "0.06em" }}>
-            DUPLICATES
-          </div>
-          <div style={{ fontFamily: sora, fontSize: 15, color: "#F5F5F5", marginTop: 6 }}>Overlapping Tool Licenses</div>
+          <CardHeader tag="DUPLICATES" title="Overlapping Tool Licenses" info="Identifies AI tools with overlapping functionality. Consolidating to a single tool per category can yield significant cost savings." />
 
           <div style={{ display: "flex", flexDirection: "column", gap: 20, marginTop: 18 }}>
             {duplicateGroups.map((group, gi) => (
@@ -174,10 +177,7 @@ export function CostsContent() {
 
         {/* Zombie Licenses */}
         <GlassCard delay={0.4} style={{ padding: "22px 24px" }}>
-          <div style={{ fontFamily: manrope, fontSize: 10, color: "#F14F44", textTransform: "uppercase", letterSpacing: "0.06em" }}>
-            INACTIVE
-          </div>
-          <div style={{ fontFamily: sora, fontSize: 15, color: "#F5F5F5", marginTop: 6 }}>Zombie Licenses (No Use &gt;90 Days)</div>
+          <CardHeader tag="INACTIVE" title="Zombie Licenses (No Use >90 Days)" info="AI tool subscriptions with no recorded usage in over 90 days. These are candidates for immediate cancellation to recover costs." />
 
           <div style={{ display: "flex", flexDirection: "column", gap: 0, marginTop: 18 }}>
             {zombies.map((z, i) => (

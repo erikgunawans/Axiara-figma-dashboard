@@ -1,6 +1,7 @@
 import { createContext, useContext, useState, useEffect, type ReactNode } from "react";
 
 type Theme = "dark" | "light";
+export type Lang = "en" | "id";
 
 interface AppState {
   theme: Theme;
@@ -8,6 +9,9 @@ interface AppState {
   sidebarCollapsed: boolean;
   setSidebarCollapsed: (v: boolean) => void;
   toggleSidebar: () => void;
+  lang: Lang;
+  setLang: (l: Lang) => void;
+  toggleLang: () => void;
   t: ThemeColors;
 }
 
@@ -87,6 +91,8 @@ const darkColors: ThemeColors = {
   meshOpacity: 1,
 };
 
+export { darkColors };
+
 const lightColors: ThemeColors = {
   bg: "#F5F5F7",
   bgSidebar: "#FFFFFF",
@@ -133,17 +139,29 @@ export function AppProvider({ children }: { children: ReactNode }) {
     }
   });
   const [sidebarCollapsed, setSidebarCollapsed] = useState(false);
+  const [lang, setLang] = useState<Lang>(() => {
+    try {
+      return (localStorage.getItem("axiara-lang") as Lang) || "en";
+    } catch {
+      return "en";
+    }
+  });
 
   useEffect(() => {
     try { localStorage.setItem("axiara-theme", theme); } catch {}
   }, [theme]);
 
+  useEffect(() => {
+    try { localStorage.setItem("axiara-lang", lang); } catch {}
+  }, [lang]);
+
   const toggleTheme = () => setTheme((t) => (t === "dark" ? "light" : "dark"));
   const toggleSidebar = () => setSidebarCollapsed((v) => !v);
+  const toggleLang = () => setLang((l) => (l === "en" ? "id" : "en"));
   const t = theme === "dark" ? darkColors : lightColors;
 
   return (
-    <AppContext.Provider value={{ theme, toggleTheme, sidebarCollapsed, setSidebarCollapsed, toggleSidebar, t }}>
+    <AppContext.Provider value={{ theme, toggleTheme, sidebarCollapsed, setSidebarCollapsed, toggleSidebar, lang, setLang, toggleLang, t }}>
       {children}
     </AppContext.Provider>
   );

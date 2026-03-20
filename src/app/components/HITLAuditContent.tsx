@@ -93,9 +93,9 @@ export function HITLAuditContent() {
 
       {/* KPI ROW */}
       <div className="flex" style={{ gap: 12, marginBottom: 22 }}>
-        <AnimatedKPI label="TOTAL DECISIONS" value={341} delay={0.05} sub={<><ChevronUp size={13} style={{ color: "#2ECC71" }} /><span style={{ fontFamily: manrope, fontSize: 11, color: "#2ECC71" }}>+28 this month</span></>} />
-        <AnimatedKPI label="PENDING REVIEW" value={7} delay={0.1} sub={<span style={{ fontFamily: manrope, fontSize: 11, color: "#AEB3BD" }}>items awaiting</span>} />
-        <AnimatedKPI label="AVG TRIAGE TIME" value={1.8} suffix="h" delay={0.15} sub={<><TrendingDown size={13} style={{ color: "#2ECC71" }} /><span style={{ fontFamily: manrope, fontSize: 11, color: "#2ECC71" }}>-22% target &lt;2h</span></>} />
+        <AnimatedKPI label="TOTAL DECISIONS" value={341} delay={0.05} info="Total governance decisions recorded in the audit trail since system inception." sub={<><ChevronUp size={13} style={{ color: "#2ECC71" }} /><span style={{ fontFamily: manrope, fontSize: 11, color: "#2ECC71" }}>+28 this month</span></>} />
+        <AnimatedKPI label="PENDING REVIEW" value={7} delay={0.1} info="Number of AI tools awaiting human-in-the-loop governance decisions from designated reviewers." sub={<span style={{ fontFamily: manrope, fontSize: 11, color: "#AEB3BD" }}>items awaiting</span>} />
+        <AnimatedKPI label="AVG TRIAGE TIME" value={1.8} suffix="h" delay={0.15} info="Average time from tool flagging to a final governance decision by a reviewer." sub={<><TrendingDown size={13} style={{ color: "#2ECC71" }} /><span style={{ fontFamily: manrope, fontSize: 11, color: "#2ECC71" }}>-22% target &lt;2h</span></>} />
       </div>
 
       {/* FILTER BAR */}

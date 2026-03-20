@@ -1,5 +1,5 @@
 import { NotificationCenter } from "./NotificationCenter";
-import { ChevronDown, Sun, Moon, Bell, Check } from "lucide-react";
+import { ChevronDown, Sun, Moon, Bell, Check, Globe } from "lucide-react";
 import { useState, useRef, useEffect } from "react";
 import { useApp } from "./AppContext";
 
@@ -13,25 +13,33 @@ const roleOptions = [
   { label: "CTO", desc: "Chief Technology Officer" },
 ];
 
+const langOptions = [
+  { code: "en" as const, label: "English", flag: "EN" },
+  { code: "id" as const, label: "Bahasa Indonesia", flag: "ID" },
+];
+
 export function TopBar({ title = "Overview" }: { title?: string }) {
   const [activePill, setActivePill] = useState("30D");
   const [notifOpen, setNotifOpen] = useState(false);
   const [roleOpen, setRoleOpen] = useState(false);
   const [activeRole, setActiveRole] = useState(0);
+  const [langOpen, setLangOpen] = useState(false);
   const roleRef = useRef<HTMLDivElement>(null);
-  const { theme, toggleTheme, t } = useApp();
+  const langRef = useRef<HTMLDivElement>(null);
+  const { theme, toggleTheme, lang, setLang, t } = useApp();
 
-  // Close role dropdown on outside click
+  // Close dropdowns on outside click
   useEffect(() => {
-    if (!roleOpen) return;
+    if (!roleOpen && !langOpen) return;
     const handler = (e: MouseEvent) => {
-      if (roleRef.current && !roleRef.current.contains(e.target as Node)) {
-        setRoleOpen(false);
-      }
+      if (roleOpen && roleRef.current && !roleRef.current.contains(e.target as Node)) setRoleOpen(false);
+      if (langOpen && langRef.current && !langRef.current.contains(e.target as Node)) setLangOpen(false);
     };
     document.addEventListener("mousedown", handler);
     return () => document.removeEventListener("mousedown", handler);
-  }, [roleOpen]);
+  }, [roleOpen, langOpen]);
+
+  const activeLang = langOptions.find((l) => l.code === lang) || langOptions[0];
 
   return (
     <>
@@ -97,7 +105,7 @@ export function TopBar({ title = "Overview" }: { title?: string }) {
         {/* Role selector */}
         <div ref={roleRef} className="relative">
           <button
-            onClick={() => setRoleOpen((v) => !v)}
+            onClick={() => { setRoleOpen((v) => !v); setLangOpen(false); }}
             className="flex items-center cursor-pointer"
             style={{
               gap: 4,
@@ -123,7 +131,7 @@ export function TopBar({ title = "Overview" }: { title?: string }) {
             />
           </button>
 
-          {/* Dropdown */}
+          {/* Role Dropdown */}
           {roleOpen && (
             <div
               style={{
@@ -168,7 +176,7 @@ export function TopBar({ title = "Overview" }: { title?: string }) {
                       textAlign: "left",
                     }}
                     onMouseEnter={(e) => { if (!isSelected) e.currentTarget.style.background = t.bgCardHover; }}
-                    onMouseLeave={(e) => { if (!isSelected) e.currentTarget.style.background = "transparent"; }}
+                    onMouseLeave={(e) => { if (!isSelected) e.currentTarget.style.background = isSelected ? t.accentSoft : "transparent"; }}
                   >
                     <div style={{ flex: 1 }}>
                       <div style={{
@@ -186,6 +194,112 @@ export function TopBar({ title = "Overview" }: { title?: string }) {
                         marginTop: 1,
                       }}>
                         {role.desc}
+                      </div>
+                    </div>
+                    {isSelected && (
+                      <Check size={14} strokeWidth={2.5} style={{ color: t.accent, flexShrink: 0 }} />
+                    )}
+                  </button>
+                );
+              })}
+            </div>
+          )}
+        </div>
+
+        {/* Language toggle */}
+        <div ref={langRef} className="relative">
+          <button
+            onClick={() => { setLangOpen((v) => !v); setRoleOpen(false); }}
+            className="flex items-center cursor-pointer"
+            style={{
+              gap: 5,
+              padding: "6px 12px",
+              borderRadius: 999,
+              border: `1px solid ${langOpen ? t.borderHover : t.borderSubtle}`,
+              background: langOpen ? t.bgCardHover : "transparent",
+              fontFamily: "'Manrope', sans-serif",
+              fontSize: 11.5,
+              color: t.textSecondary,
+              transition: "all 0.2s ease",
+            }}
+          >
+            <Globe size={13} strokeWidth={1.8} style={{ color: t.textMuted }} />
+            {activeLang.flag}
+            <ChevronDown
+              size={12}
+              strokeWidth={1.8}
+              style={{
+                color: t.textMuted,
+                transition: "transform 0.2s ease",
+                transform: langOpen ? "rotate(180deg)" : "rotate(0deg)",
+              }}
+            />
+          </button>
+
+          {/* Language Dropdown */}
+          {langOpen && (
+            <div
+              style={{
+                position: "absolute",
+                top: "calc(100% + 6px)",
+                right: 0,
+                width: 220,
+                background: t.bgCard,
+                border: `1px solid ${t.borderSubtle}`,
+                borderRadius: 14,
+                padding: "6px",
+                zIndex: 100,
+                boxShadow: theme === "dark"
+                  ? "0 12px 40px rgba(0,0,0,0.5)"
+                  : "0 12px 40px rgba(0,0,0,0.12)",
+              }}
+            >
+              <div style={{
+                padding: "8px 12px 6px",
+                fontFamily: "'Manrope', sans-serif",
+                fontSize: 10,
+                color: t.textMuted,
+                textTransform: "uppercase",
+                letterSpacing: "0.06em",
+              }}>
+                Language
+              </div>
+              {langOptions.map((opt) => {
+                const isSelected = opt.code === lang;
+                return (
+                  <button
+                    key={opt.code}
+                    onClick={() => { setLang(opt.code); setLangOpen(false); }}
+                    className="flex items-center w-full cursor-pointer"
+                    style={{
+                      padding: "10px 12px",
+                      borderRadius: 10,
+                      background: isSelected ? t.accentSoft : "transparent",
+                      border: "none",
+                      gap: 10,
+                      transition: "background 0.15s ease",
+                      textAlign: "left",
+                    }}
+                    onMouseEnter={(e) => { if (!isSelected) e.currentTarget.style.background = t.bgCardHover; }}
+                    onMouseLeave={(e) => { if (!isSelected) e.currentTarget.style.background = isSelected ? t.accentSoft : "transparent"; }}
+                  >
+                    <span style={{
+                      fontFamily: "'Sora', sans-serif",
+                      fontSize: 13,
+                      fontWeight: 700,
+                      color: isSelected ? t.accent : t.textMuted,
+                      width: 28,
+                    }}>
+                      {opt.flag}
+                    </span>
+                    <div style={{ flex: 1 }}>
+                      <div style={{
+                        fontFamily: "'Manrope', sans-serif",
+                        fontSize: 13,
+                        fontWeight: isSelected ? 600 : 500,
+                        color: isSelected ? t.accent : t.textPrimary,
+                      }}>
+                        {opt.label}
                       </div>
                     </div>
                     {isSelected && (

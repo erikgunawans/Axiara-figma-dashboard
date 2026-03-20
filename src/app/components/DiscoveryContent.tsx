@@ -1,7 +1,7 @@
 import { Search, MoreHorizontal, ChevronDown } from "lucide-react";
 import { useState } from "react";
 import { GovernanceModal } from "./GovernanceModal";
-import { AnimatedKPI, GlassCard, SectionHeader, AnimatedTable, HoverTableRow, StaggerIn } from "./premium-ui";
+import { AnimatedKPI, GlassCard, SectionHeader, AnimatedTable, HoverTableRow, StaggerIn, CardHeader, InfoTooltip } from "./premium-ui";
 
 const sora = "'Sora', sans-serif";
 const manrope = "'Manrope', sans-serif";
@@ -109,17 +109,16 @@ export function DiscoveryContent() {
     <div style={{ display: "flex", flexDirection: "column", gap: 20 }}>
       {/* KPI Row */}
       <div style={{ display: "grid", gridTemplateColumns: "repeat(4, 1fr)", gap: 14 }}>
-        <AnimatedKPI label="TOTAL DISCOVERED" value={189} delay={0.05} sub={<span style={{ fontFamily: manrope, fontSize: 12, color: "#2ECC71" }}>+23 this month</span>} />
-        <AnimatedKPI label="UNGOVERNED" value={38} delay={0.1} sub={<Pill label="High Risk" color="#F14F44" />} />
-        <AnimatedKPI label="VECTORS ACTIVE" value={5} delay={0.15} sub={<span style={{ fontFamily: manrope, fontSize: 12, color: "#AEB3BD" }}>of 8 configured</span>} />
-        <AnimatedKPI label="AVG DETECT TIME" value={4.2} suffix="h" delay={0.2} sub={<span style={{ fontFamily: manrope, fontSize: 12, color: "#2ECC71" }}>-1.3h improvement</span>} />
+        <AnimatedKPI label="TOTAL DISCOVERED" value={189} delay={0.05} info="Total number of AI tools detected across all discovery vectors." sub={<span style={{ fontFamily: manrope, fontSize: 12, color: "#2ECC71" }}>+23 this month</span>} />
+        <AnimatedKPI label="UNGOVERNED" value={38} delay={0.1} info="AI tools in use that have not been classified or assigned a governance status." sub={<Pill label="High Risk" color="#F14F44" />} />
+        <AnimatedKPI label="VECTORS ACTIVE" value={5} delay={0.15} info="Number of active detection methods scanning for AI tool usage." sub={<span style={{ fontFamily: manrope, fontSize: 12, color: "#AEB3BD" }}>of 8 configured</span>} />
+        <AnimatedKPI label="AVG DETECT TIME" value={4.2} suffix="h" delay={0.2} info="Average time from first tool usage to detection by the discovery engine." sub={<span style={{ fontFamily: manrope, fontSize: 12, color: "#2ECC71" }}>-1.3h improvement</span>} />
       </div>
 
       {/* Heatmap */}
       <GlassCard delay={0.25}>
-        <span style={{ fontFamily: manrope, fontSize: 11, color: "#F14F44", textTransform: "uppercase", letterSpacing: "0.03em" }}>ACTIVITY PATTERNS</span>
-        <div className="flex items-center justify-between" style={{ marginTop: 4 }}>
-          <span style={{ fontFamily: sora, fontSize: 15, color: "#F5F5F5", letterSpacing: "-0.03em" }}>Detection Heatmap — Weekly Activity</span>
+        <CardHeader tag="ACTIVITY PATTERNS" title="Detection Heatmap — Weekly Activity" info="Shows AI tool usage detection intensity by hour and day of the week. Darker cells indicate higher detection activity." />
+        <div className="flex items-center justify-end" style={{ marginTop: 8 }}>
           <div className="flex items-center" style={{ gap: 6 }}>
             <span style={{ fontFamily: manrope, fontSize: 8.5, color: "#555" }}>Low</span>
             {heatColors.map((c, i) => (

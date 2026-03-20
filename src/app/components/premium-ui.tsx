@@ -1,9 +1,113 @@
 import { motion } from "motion/react";
 import { useState, useEffect, useRef } from "react";
+import { Info } from "lucide-react";
 import { useApp, type ThemeColors } from "./AppContext";
 
 const sora = "'Sora', sans-serif";
 const manrope = "'Manrope', sans-serif";
+
+/* ── Info tooltip ──────────────────────────────────────── */
+export function InfoTooltip({ text }: { text: string }) {
+  const [show, setShow] = useState(false);
+  const { t } = useApp();
+
+  return (
+    <div
+      style={{ position: "relative", display: "inline-flex", zIndex: 20 }}
+      onMouseEnter={() => setShow(true)}
+      onMouseLeave={() => setShow(false)}
+    >
+      <div
+        className="flex items-center justify-center cursor-help"
+        style={{
+          width: 20,
+          height: 20,
+          borderRadius: "50%",
+          background: t.bgCardHover,
+          border: `1px solid ${t.borderSubtle}`,
+          transition: "all 0.2s ease",
+          flexShrink: 0,
+        }}
+      >
+        <Info size={11} strokeWidth={2} style={{ color: t.textMuted, transition: "color 0.2s ease" }} />
+      </div>
+      {show && (
+        <motion.div
+          initial={{ opacity: 0, y: 4, scale: 0.96 }}
+          animate={{ opacity: 1, y: 0, scale: 1 }}
+          transition={{ duration: 0.15 }}
+          style={{
+            position: "absolute",
+            top: "calc(100% + 8px)",
+            right: 0,
+            minWidth: 200,
+            maxWidth: 280,
+            padding: "10px 14px",
+            borderRadius: 10,
+            background: t.bgElevated,
+            border: `1px solid ${t.borderSubtle}`,
+            boxShadow: "0 8px 32px rgba(0,0,0,0.4)",
+            fontFamily: manrope,
+            fontSize: 11.5,
+            lineHeight: 1.5,
+            color: t.textSecondary,
+            pointerEvents: "none",
+          }}
+        >
+          {text}
+        </motion.div>
+      )}
+    </div>
+  );
+}
+
+/* ── Card header with consistent layout ────────────────── */
+export function CardHeader({
+  tag,
+  title,
+  info,
+  tagColor,
+}: {
+  tag: string;
+  title?: string;
+  info?: string;
+  tagColor?: string;
+}) {
+  const { t } = useApp();
+  return (
+    <div style={{ display: "flex", alignItems: "flex-start", justifyContent: "space-between", gap: 8, marginBottom: title ? 0 : 0 }}>
+      <div style={{ flex: 1, minWidth: 0 }}>
+        <div
+          style={{
+            fontFamily: manrope,
+            fontSize: 10,
+            color: tagColor || t.accent,
+            textTransform: "uppercase",
+            letterSpacing: "0.08em",
+            lineHeight: 1.3,
+          }}
+        >
+          {tag}
+        </div>
+        {title && (
+          <div
+            style={{
+              fontFamily: sora,
+              fontSize: 15,
+              color: t.textPrimary,
+              letterSpacing: "-0.05em",
+              marginTop: 4,
+              lineHeight: 1.3,
+            }}
+          >
+            {title}
+          </div>
+        )}
+      </div>
+      {info && <InfoTooltip text={info} />}
+    </div>
+  );
+}
 
 /* ── Animated counter hook ─────────────────────────────── */
 export function useCountUp(target: number, decimals = 0, duration = 1200) {
@@ -135,6 +239,7 @@ export function AnimatedKPI({
   sub,
   delay = 0,
   format,
+  info,
 }: {
   label: string;
   value: number;
@@ -144,6 +249,7 @@ export function AnimatedKPI({
   sub?: React.ReactNode;
   delay?: number;
   format?: (v: number) => string;
+  info?: string;
 }) {
   const counter = useCountUp(value, value % 1 !== 0 ? 1 : 0, 1200);
   const [hovered, setHovered] = useState(false);
@@ -181,13 +287,16 @@ export function AnimatedKPI({
           transition: "background 0.4s ease",
         }}
       />
-      <div
-        style={{
-          fontFamily: manrope, fontSize: 10, color: t.textLabel,
-          textTransform: "uppercase", letterSpacing: "0.08em",
-        }}
-      >
-        {label}
+      <div style={{ display: "flex", alignItems: "flex-start", justifyContent: "space-between", gap: 8 }}>
+        <div
+          style={{
+            fontFamily: manrope, fontSize: 10, color: t.textLabel,
+            textTransform: "uppercase", letterSpacing: "0.08em",
+          }}
+        >
+          {label}
+        </div>
+        {info && <InfoTooltip text={info} />}
       </div>
       <div className="flex items-end justify-between" style={{ marginTop: 10 }} ref={counter.ref}>
         <span style={{ fontFamily: sora, fontSize: 30, fontWeight: 700, color: displayColor, lineHeight: 1 }}>

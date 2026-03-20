@@ -1,6 +1,7 @@
 import { motion } from "motion/react";
 import { useState } from "react";
 import { useApp } from "./AppContext";
+import { InfoTooltip } from "./premium-ui";
 
 const sora = "'Sora', sans-serif";
 const manrope = "'Manrope', sans-serif";
@@ -51,13 +52,16 @@ export function GovernanceFunnel() {
       />
 
       {/* Header */}
-      <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
-        <span style={{ fontFamily: manrope, fontSize: 10, color: "#F14F44", textTransform: "uppercase", letterSpacing: "0.08em" }}>
-          GOVERNANCE PIPELINE
-        </span>
-        <span style={{ fontFamily: sora, fontSize: 15, color: "#E5E5E5", letterSpacing: "-0.05em" }}>
-          Tool Lifecycle Funnel
-        </span>
+      <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start" }}>
+        <div>
+          <span style={{ fontFamily: manrope, fontSize: 10, color: "#F14F44", textTransform: "uppercase", letterSpacing: "0.08em" }}>
+            GOVERNANCE PIPELINE
+          </span>
+          <div style={{ fontFamily: sora, fontSize: 15, color: "#E5E5E5", letterSpacing: "-0.05em", marginTop: 4 }}>
+            Tool Lifecycle Funnel
+          </div>
+        </div>
+        <InfoTooltip text="Visualizes all AI tools flowing through the governance lifecycle — from initial discovery through review, sandbox testing, approval, restriction, or ban." />
       </div>
 
       {/* Bar + total */}

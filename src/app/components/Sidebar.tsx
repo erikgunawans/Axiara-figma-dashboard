@@ -1,8 +1,8 @@
-import { useState, useEffect } from "react";
+import { useApp, darkColors } from "./AppContext";
 import { useNavigate } from "react-router";
-import { LayoutGrid, ShieldCheck, GitBranch, BarChart3, Layers, Search, DollarSign, Plug, Settings, ChevronsLeft, ChevronsRight } from "lucide-react";
+import { LayoutGrid, ShieldCheck, GitBranch, BarChart3, Layers, Search, DollarSign, Plug, Settings, ChevronsLeft, ChevronsRight, LogOut } from "lucide-react";
 import { CommandPalette } from "./CommandPalette";
-import { useApp } from "./AppContext";
+import { useState, useEffect } from "react";
 import logoImg from "figma:asset/e36e006ed674caca4c383e7161bab0eb1df34dd9.png";
 
 const navItems = [
@@ -27,7 +27,10 @@ export function Sidebar({ activeNav = 0 }: { activeNav?: number }) {
   const [cmdOpen, setCmdOpen] = useState(false);
   const [hoveredNav, setHoveredNav] = useState<number | null>(null);
   const navigate = useNavigate();
-  const { sidebarCollapsed, toggleSidebar, t } = useApp();
+  const { sidebarCollapsed, toggleSidebar } = useApp();
+
+  // Sidebar always uses dark theme colors
+  const t = darkColors;
 
   const w = sidebarCollapsed ? 68 : 236;
 
@@ -247,6 +250,33 @@ export function Sidebar({ activeNav = 0 }: { activeNav?: number }) {
           </button>
         </div>
       )}
+
+      {/* Logout Button */}
+      <div style={{ margin: sidebarCollapsed ? "0 6px 4px" : "0 8px 4px" }}>
+        <button
+          title={sidebarCollapsed ? "Logout" : undefined}
+          onClick={() => navigate("/login")}
+          className="w-full flex items-center cursor-pointer"
+          style={{
+            padding: sidebarCollapsed ? "10px 0" : "10px 14px",
+            justifyContent: sidebarCollapsed ? "center" : "flex-start",
+            gap: sidebarCollapsed ? 0 : 10,
+            borderRadius: 10,
+            background: "transparent",
+            border: "none",
+            transition: "all 0.2s ease",
+          }}
+          onMouseEnter={(e) => (e.currentTarget.style.background = t.bgCardHover)}
+          onMouseLeave={(e) => (e.currentTarget.style.background = "transparent")}
+        >
+          <LogOut size={sidebarCollapsed ? 20 : 17} strokeWidth={1.7} style={{ color: t.textMuted, flexShrink: 0 }} />
+          {!sidebarCollapsed && (
+            <span style={{ fontFamily: "'Manrope', sans-serif", fontSize: 13.5, fontWeight: 500, color: t.textSecondary, whiteSpace: "nowrap" }}>
+              Logout
+            </span>
+          )}
+        </button>
+      </div>
 
       {/* Collapse toggle */}
       <div

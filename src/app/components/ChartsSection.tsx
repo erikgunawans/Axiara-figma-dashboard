@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { motion } from "motion/react";
 import { useApp } from "./AppContext";
+import { CardHeader } from "./premium-ui";
 
 const sora = "'Sora', sans-serif";
 const manrope = "'Manrope', sans-serif";
@@ -298,12 +299,11 @@ export function ChartsSection() {
     >
       {/* Left — Area Chart */}
       <GlassHoverCard delay={0.35}>
-        <span style={{ fontFamily: manrope, fontSize: 10, color: "#F14F44", textTransform: "uppercase", letterSpacing: "0.08em" }}>
-          DETECTION TREND
-        </span>
-        <div style={{ fontFamily: sora, fontSize: 15, color: "#E5E5E5", letterSpacing: "-0.05em", marginTop: 4 }}>
-          AI Discovery by Vector (6 Months)
-        </div>
+        <CardHeader
+          tag="DETECTION TREND"
+          title="AI Discovery by Vector (6 Months)"
+          info="Tracks how AI tools are discovered across different network vectors over the past 6 months. Helps identify primary discovery channels."
+        />
         <div style={{ width: "100%", height: 200, marginTop: 12 }}>
           <CustomAreaChart />
         </div>
@@ -320,12 +320,11 @@ export function ChartsSection() {
 
       {/* Right — Donut */}
       <GlassHoverCard delay={0.4} style={{ display: "flex", flexDirection: "column" }}>
-        <span style={{ fontFamily: manrope, fontSize: 10, color: "#F14F44", textTransform: "uppercase", letterSpacing: "0.08em" }}>
-          RISK MATRIX
-        </span>
-        <div style={{ fontFamily: sora, fontSize: 15, color: "#E5E5E5", letterSpacing: "-0.05em", marginTop: 4 }}>
-          Distribution by Severity
-        </div>
+        <CardHeader
+          tag="RISK MATRIX"
+          title="Distribution by Severity"
+          info="Breakdown of all discovered AI tools by their assessed risk severity level. Critical and High items require immediate attention."
+        />
         <div style={{ position: "relative", width: "100%", height: 160, marginTop: 8, display: "flex", justifyContent: "center" }}>
           <AnimatedDonut />
         </div>

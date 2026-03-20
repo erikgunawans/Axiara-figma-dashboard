@@ -2,6 +2,7 @@ import React, { useState, useEffect, useRef } from "react";
 import { motion } from "motion/react";
 import { Trophy, Medal, Award } from "lucide-react";
 import { useApp } from "./AppContext";
+import { CardHeader } from "./premium-ui";
 
 const sora = "'Sora', sans-serif";
 const manrope = "'Manrope', sans-serif";
@@ -125,12 +126,11 @@ export function AttentionSection() {
     >
       {/* Left — Compliance Frameworks */}
       <GlassHoverCard delay={0.45}>
-        <span style={{ fontFamily: manrope, fontSize: 10, color: "#F14F44", textTransform: "uppercase", letterSpacing: "0.08em" }}>
-          COMPLIANCE
-        </span>
-        <div style={{ fontFamily: sora, fontSize: 15, color: "#E5E5E5", letterSpacing: "-0.05em", marginTop: 4 }}>
-          Framework Coverage
-        </div>
+        <CardHeader
+          tag="COMPLIANCE"
+          title="Framework Coverage"
+          info="Shows your organization's compliance coverage across key regulatory frameworks. Bars indicate percentage of requirements met for each framework."
+        />
         <div style={{ display: "flex", flexDirection: "column", gap: 16, marginTop: 18 }}>
           {frameworks.map((f, i) => (
             <div key={f.name}>
@@ -146,12 +146,11 @@ export function AttentionSection() {
 
       {/* Right — Leaderboard */}
       <GlassHoverCard delay={0.5}>
-        <span style={{ fontFamily: manrope, fontSize: 10, color: "#F14F44", textTransform: "uppercase", letterSpacing: "0.08em" }}>
-          DEPARTMENTS
-        </span>
-        <div style={{ fontFamily: sora, fontSize: 15, color: "#E5E5E5", letterSpacing: "-0.05em", marginTop: 4 }}>
-          Compliance Leaderboard
-        </div>
+        <CardHeader
+          tag="DEPARTMENTS"
+          title="Compliance Leaderboard"
+          info="Ranks departments by their AI governance compliance score. Top performers earn medals. Scores below 80 may require remediation."
+        />
         <div style={{ display: "flex", flexDirection: "column", marginTop: 14 }}>
           {departments.map((d, i) => {
             const medal = medalConfig[d.rank];
